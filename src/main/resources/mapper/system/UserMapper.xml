@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sachin.risk.manager.dao.system.UserMapper">
+
+    <resultMap id="user" type="com.sachin.risk.manager.model.system.User">
+        <result property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="nickname" column="nickname"/>
+        <result property="admin" column="admin"/>
+        <result property="remarks" column="remarks"/>
+        <result property="createdOn" column="created_on"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="modifiedOn" column="modified_on"/>
+        <result property="modifiedBy" column="modified_by"/>
+    </resultMap>
+
+    <sql id="selectSql">
+	    select 
+	    	id,
+	    	username,
+	    	nickname,
+	    	admin,
+	    	remarks,
+	    	created_on,
+	    	created_by,
+	    	modified_on,
+	    	modified_by
+	    from
+	        rc_user
+	</sql>
+
+    <!-- 根据用户名查询 -->
+    <select id="queryByUsername" resultMap="user">
+        <include refid="selectSql"/>
+        WHERE username = #{username}
+    </select>
+</mapper>

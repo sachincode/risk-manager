@@ -1,0 +1,11 @@
+<div class="breadcrumbs" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="#">Home</a>
+        </li>
+        #foreach($menu in $sys_crumb_list)
+            <li class="active">$!{menu.menuName}</li>
+        #end
+    </ul>
+</div>

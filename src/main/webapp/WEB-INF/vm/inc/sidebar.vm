@@ -1,0 +1,60 @@
+<div id="sidebar" class="sidebar sidebar-fixed">
+    <ul class="nav nav-list">
+        <li class="active">
+            <a href="#">
+                <i class="menu-icon fa fa-tachometer"></i>
+                <span class="menu-text">菜单</span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+
+        #foreach( ${menu} in ${sys_menu_list})
+        <li #if(${menu.active})class="#if(${menu.subMenus.size()} > 0) open #else active #end"#end>
+            <a href="$!{menu.url}" #if(${menu.subMenus.size()} > 0)class="dropdown-toggle"#end>
+                <i class=""></i>
+                <span class="menu-text">&nbsp;&nbsp;&nbsp;$!{menu.menuName}</span>
+
+                #if(${menu.subMenus.size()} > 0)
+                <b class="arrow fa fa-angle-down"></b>
+                #end
+            </a>
+            <b class="arrow"></b>
+            #if(${menu.subMenus.size()} > 0)
+                <ul class="submenu">
+                    #foreach( ${sMenu} in ${menu.subMenus})
+                    <li #if(${sMenu.active})class="#if(${sMenu.subMenus.size()} > 0) open #else active #end"#end>
+                        <a href="$!{sMenu.url}" #if(${sMenu.subMenus.size()} > 0)class="dropdown-toggle"#end>
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            $!{sMenu.menuName}
+
+                            #if(${sMenu.subMenus.size()} > 0)
+                            <b class="arrow fa fa-angle-down"></b>
+                            #end
+                        </a>
+                        <b class="arrow"></b>
+                        #if(${sMenu.subMenus.size()} > 0)
+                        <ul class="submenu">
+                            #foreach( ${tMenu} in ${sMenu.subMenus})
+                            <li #if(${tMenu.active})class="#if(${tMenu.subMenus.size()} > 0) open #else active #end"#end>
+                                <a href="$!{tMenu.url}">
+                                    <i class="menu-icon fa fa-caret-right"></i>
+                                    $!{tMenu.menuName}
+                                </a>
+                                <b class="arrow"></b>
+                            </li>
+                            #end
+                        </ul>
+                        #end
+                    </li>
+                    #end
+                </ul>
+            #end
+        </li>
+        #end
+
+    </ul> <!-- /.nav-list -->
+
+    <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+        <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+    </div>
+</div>

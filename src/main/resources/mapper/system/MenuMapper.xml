@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sachin.risk.manager.dao.system.MenuMapper">
+
+    <resultMap id="menu" type="com.sachin.risk.manager.model.system.Menu">
+        <result property="id" column="id"/>
+        <result property="menuName" column="menu_name"/>
+        <result property="url" column="url"/>
+        <result property="sortNumber" column="sort_number"/>
+        <result property="parentMenuId" column="parent_menu_id"/>
+        <result property="remarks" column="remarks"/>
+        <result property="createdOn" column="created_on"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="modifiedOn" column="modified_on"/>
+        <result property="modifiedBy" column="modified_by"/>
+    </resultMap>
+
+    <sql id="selectSql">
+	    select 
+	    	id,
+	    	menu_name,
+	    	url,
+	    	sort_number,
+	    	parent_menu_id,
+	    	remarks,
+	    	created_on,
+	    	created_by,
+	    	modified_on,
+	    	modified_by
+	    from
+	        rc_menu
+	</sql>
+
+    <sql id="whereSql">
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="menuName != null and menuName != ''">
+                and menu_name = #{menuName}
+            </if>
+            <if test="url != null and url != ''">
+                and url = #{url}
+            </if>
+        </where>
+    </sql>
+
+    <!-- 根据条件查询 -->
+    <select id="query" resultMap="menu">
+        <include refid="selectSql"/>
+        <include refid="whereSql"/>
+    </select>
+</mapper>
