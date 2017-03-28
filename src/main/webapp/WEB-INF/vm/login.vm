@@ -9,7 +9,7 @@
         </div>
         <div class="center">
             <button id="loginButton" class="btn btn-sm btn-primary">
-                登录
+                <a href="/login.do">登录</a>
             </button>
         </div> 
     </div>

@@ -23,6 +23,12 @@
 
     <dependencies>
 
+        <!-- sachin risk -->
+        <dependency>
+            <groupId>com.sachin.risk</groupId>
+            <artifactId>common-data</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -42,6 +48,10 @@
         <dependency>
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
         </dependency>
         <dependency>
             <groupId>joda-time</groupId>
@@ -159,6 +169,20 @@
             <artifactId>commons-digester</artifactId>
         </dependency>
 
+        <!--excel生成-->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.xmlbeans</groupId>
+            <artifactId>xmlbeans</artifactId>
+        </dependency>
+
         <!-- logging -->
         <!-- slf4j api -->
         <dependency>
@@ -191,6 +215,12 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- sachin risk -->
+            <dependency>
+                <groupId>com.sachin.risk</groupId>
+                <artifactId>common-data</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
 
             <!-- jdbc drivers -->
             <dependency>
@@ -349,6 +379,23 @@
                 <groupId>apache-digester</groupId>
                 <artifactId>commons-digester</artifactId>
                 <version>1.6</version>
+            </dependency>
+
+            <!--excel-->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>3.11</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>3.11</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.xmlbeans</groupId>
+                <artifactId>xmlbeans</artifactId>
+                <version>2.5.0</version>
             </dependency>
 
             <!-- spring -->

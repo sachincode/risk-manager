@@ -15,7 +15,7 @@
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                         <span class="user-info">
                             <small>Welcoome,</small>
-                            $!{id}
+                            $!{cookie.username.value}
                         </span>
                         <i class="ace-icon fa fa-caret-down"></i>
                     </a>

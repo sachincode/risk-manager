@@ -5,6 +5,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sachin.risk.manager.util.CookieUtil;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -29,26 +31,41 @@ public class PageController {
 
     @RequestMapping(value = { "/", "/index.do" })
     public ModelAndView index(HttpServletRequest request) {
-        WebApplicationContext wc = (WebApplicationContext) request.getAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE);
-        RequestMappingHandlerMapping bean = wc.getBean(RequestMappingHandlerMapping.class);
-        Map<RequestMappingInfo, HandlerMethod> handlerMethods = bean.getHandlerMethods();
-        request.setAttribute("url", handlerMethods);
-        return new ModelAndView("hello/hello");
+//        WebApplicationContext wc = (WebApplicationContext) request.getAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE);
+//        RequestMappingHandlerMapping bean = wc.getBean(RequestMappingHandlerMapping.class);
+//        Map<RequestMappingInfo, HandlerMethod> handlerMethods = bean.getHandlerMethods();
+//        request.setAttribute("url", handlerMethods);
+        if (CookieUtil.isLogin(request)) {
+            return new ModelAndView("hello/hello");
+        } else {
+            return new ModelAndView("login");
+        }
     }
 
     @RequestMapping(value = "/login.do")
     public String login(HttpServletRequest request, HttpServletResponse response) {
+        CookieUtil.login(request, response, "sachin");
+        return "redirect:/index.do";
+    }
+
+    @RequestMapping(value = "/loginPage.do")
+    public String loginPage(HttpServletRequest request, HttpServletResponse response) {
+        String username = CookieUtil.getLoginUsername(request);
+        if (StringUtils.isBlank(username)) {
+            return "login";
+        }
         return "redirect:/index.do";
     }
 
     @RequestMapping(value = "/logout.do")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         logger.info("用户退出登录");
-        return "redirect:/login.do";
+        CookieUtil.logout(response);
+        return "redirect:/loginPage.do";
     }
 
     @RequestMapping(value = "/error/404.do")
-    public ModelAndView page404() {
+    public ModelAndView page404(HttpServletRequest request) {
         return new ModelAndView("error/404");
     }
 }
