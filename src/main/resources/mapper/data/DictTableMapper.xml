@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sachin.risk.manager.dao.data.DictTableMapper">
+
+    <resultMap id="sysDictTable" type="com.sachin.risk.common.data.model.DictTable">
+        <result property="id" column="id"/>
+        <result property="tableName" column="tbl_name"/>
+        <result property="tableDesc" column="tbl_desc"/>
+        <result property="tableType" column="tbl_type"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="tableNameCn" column="tbl_name_cn"/>
+    </resultMap>
+
+    <sql id="selectSql">
+	    select 
+	    	id,
+	    	tbl_name,
+	    	tbl_desc,
+	    	tbl_type,
+	    	create_by,
+	    	update_by,
+	    	create_time,
+	    	update_time,
+	    	tbl_name_cn
+	    from
+	        rc_dict_table
+	</sql>
+
+    <sql id="whereSql">
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="tableName != null and tableName != ''">
+                and tbl_name = #{tableName}
+            </if>
+            <if test="tableDesc != null and tableDesc != ''">
+                and tbl_desc = #{tableDesc}
+            </if>
+            <if test="tableType != null">
+                and tbl_type = #{tableType}
+            </if>
+            <if test="keyWord != null and keyWord != ''">
+                and (tbl_name like '%${keyWord}%' or tbl_desc like '%${keyWord}%' or tbl_name_cn like '%${keyWord}%')
+            </if>
+        </where>
+    </sql>
+
+    <!-- 根据条件查询所有 -->
+    <select id="queryByCondition" resultMap="sysDictTable">
+        <include refid="selectSql"/>
+        <include refid="whereSql"/>
+    </select>
+
+    <!-- 统计条数 -->
+    <select id="count" resultType="long">
+        select count(*)
+        from rc_dict_table
+        <include refid="whereSql"/>
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="queryWithPage" resultMap="sysDictTable">
+        <include refid="selectSql"/>
+        <include refid="whereSql"/>
+        order by tbl_name
+        limit #{start},#{pageSize}
+    </select>
+
+
+    <!-- 新增 -->
+    <insert id="add" useGeneratedKeys="true" keyProperty="id" parameterType="com.sachin.risk.common.data.model.DictTable">
+        insert into rc_dict_table(tbl_name,tbl_type,create_by,update_by,create_time,tbl_name_cn
+        <if test="tableDesc">,tbl_desc</if>)
+        values(#{tableName},#{tableType},#{createBy},#{updateBy},#{createTime},#{tableNameCn}
+        <if test="tableDesc">,#{tableDesc}</if>)
+    </insert>
+
+    <!-- 删除 -->
+    <delete id="delete">
+        delete from rc_dict_table where id = #{id}
+    </delete>
+
+    <!-- 更新 -->
+    <update id="update" parameterType="com.sachin.risk.common.data.model.DictTable">
+        update rc_dict_table
+        set
+        update_by=#{updateBy}
+        <if test="tableName">,tbl_name = #{tableName}</if>
+        <if test="tableType">,tbl_type = #{tableType}</if>
+        <if test="tableDesc">,tbl_desc = #{tableDesc}</if>
+        <if test="updateTime">,update_time = #{updateTime}</if>
+        <if test="tableNameCn">,tbl_name_cn = #{tableNameCn}</if>
+        where id = #{id}
+    </update>
+
+</mapper>

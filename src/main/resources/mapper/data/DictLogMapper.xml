@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sachin.risk.manager.dao.data.DictLogMapper">
+
+    <resultMap id="sysDictLog" type="com.sachin.risk.manager.model.data.DictLog">
+        <result property="id" column="id"/>
+        <result property="tableName" column="tbl_name"/>
+        <result property="operateType" column="operate_type"/>
+        <result property="operateDetail" column="operate_detail"/>
+        <result property="operator" column="operator"/>
+        <result property="operateTime" column="operate_time"/>
+    </resultMap>
+
+    <sql id="selectSql">
+	    select 
+	    	id,
+	    	tbl_name,
+	    	operator,
+	    	operate_type,
+	    	operate_detail,
+	    	operate_time
+	    from
+	        rc_dict_log
+	</sql>
+
+    <sql id="whereSql">
+        <where>
+            <if test="tableName != null and tableName != ''">
+                and tbl_name = #{tableName}
+            </if>
+            <if test="operator != null and operator != ''">
+                and operator = #{operator}
+            </if>
+            <if test="operateDetail != null and operateDetail != ''">
+                and operate_detail like '%${operateDetail}%'
+            </if>
+        </where>
+    </sql>
+
+    <!-- 根据条件查询所有 -->
+    <select id="queryByCondition" resultMap="sysDictLog">
+        <include refid="selectSql"/>
+        <include refid="whereSql"/>
+    </select>
+
+    <!-- 统计条数 -->
+    <select id="count" resultType="long">
+        select count(*)
+        from rc_dict_log
+        <include refid="whereSql"/>
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="queryWithPage" resultMap="sysDictLog">
+        <include refid="selectSql"/>
+        <include refid="whereSql"/>
+        order by operate_time desc
+        limit #{start},#{pageSize}
+    </select>
+
+    <!-- 新增 -->
+    <insert id="add" useGeneratedKeys="true" keyProperty="id" parameterType="com.sachin.risk.manager.model.data.DictLog">
+        insert into rc_dict_log(tbl_name,operator,operate_type,operate_detail)
+        values(#{tableName},#{operator},#{operateType},#{operateDetail})
+    </insert>
+
+</mapper>

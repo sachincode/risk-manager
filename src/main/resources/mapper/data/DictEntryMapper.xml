@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sachin.risk.manager.dao.data.DictEntryMapper">
+
+    <resultMap id="dictEntry" type="com.sachin.risk.common.data.model.DictEntry">
+        <result property="id" column="id"/>
+        <result property="tableId" column="tbl_id"/>
+        <result property="dictCode" column="dict_code"/>
+        <result property="dictName" column="dict_name"/>
+        <result property="dictDesc" column="dict_desc"/>
+        <result property="dictSort" column="dict_sort"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="ext1" column="ext1"/>
+        <result property="ext2" column="ext2"/>
+        <result property="ext3" column="ext3"/>
+        <result property="ext4" column="ext4"/>
+        <result property="ext5" column="ext5"/>
+    </resultMap>
+
+    <sql id="selectSql">
+	    select 
+	    	id,
+	    	tbl_id,
+	    	dict_code,
+	    	dict_name,
+	    	dict_desc,
+	    	dict_sort,
+	    	create_by,
+	    	update_by,
+	    	create_time,
+	    	update_time,
+	    	ext1,
+	    	ext2,
+	    	ext3,
+	    	ext4,
+	    	ext5
+	    from
+	        rc_dict_entry
+	</sql>
+
+    <sql id="whereSql">
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="tableId != null">
+                and tbl_id = #{tableId}
+            </if>
+            <if test="dictCode != null and dictCode != ''">
+                and dict_code = #{dictCode}
+            </if>
+            <if test="dictName != null and dictName != ''">
+                and dict_name = #{dictName}
+            </if>
+            <if test="dictDesc != null and dictDesc != ''">
+                and dict_desc = #{dictDesc}
+            </if>
+            <if test="keyWords != null and keyWords != ''">
+                and (dict_code like '%${keyWords}%' or dict_name like '%${keyWords}%' or dict_desc like '%${keyWords}%'
+                or ext1 like '%${keyWords}%' or ext2 like '%${keyWords}%' or ext3 like '%${keyWords}%'
+                or ext4 like '%${keyWords}%' or ext5 like '%${keyWords}%')
+            </if>
+        </where>
+    </sql>
+
+    <!-- 根据条件查询所有 -->
+    <select id="queryByCondition" resultMap="dictEntry">
+        <include refid="selectSql"/>
+        <include refid="whereSql"/>
+        order by tbl_id,dict_code
+    </select>
+
+    <!-- 统计条数 -->
+    <select id="count" resultType="long">
+        select count(*)
+        from rc_dict_entry
+        <include refid="whereSql"/>
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="queryWithPage" resultMap="dictEntry">
+        <include refid="selectSql"/>
+        <include refid="whereSql"/>
+        order by tbl_id,dict_code
+        limit #{start},#{pageSize}
+    </select>
+
+    <!-- 新增 -->
+    <insert id="add" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.sachin.risk.common.data.model.DictEntry">
+        insert into rc_dict_entry(tbl_id,dict_code,dict_name
+            <if test="dictDesc">,dict_desc</if>
+            <if test="dictSort">,dict_sort</if>
+            ,create_by,update_by,create_time
+            <if test="ext1">,ext1</if>
+            <if test="ext2">,ext2</if>
+            <if test="ext3">,ext3</if>
+            <if test="ext4">,ext4</if>
+            <if test="ext5">,ext5</if>)
+        values(#{tableId},#{dictCode},#{dictName}
+            <if test="dictDesc">,#{dictDesc}</if>
+            <if test="dictSort">,#{dictSort}</if>
+            ,#{createBy},#{updateBy},#{createTime}
+            <if test="ext1">,#{ext1}</if>
+            <if test="ext2">,#{ext2}</if>
+            <if test="ext3">,#{ext3}</if>
+            <if test="ext4">,#{ext4}</if>
+            <if test="ext5">,#{ext5}</if>)
+    </insert>
+
+    <insert id="batchAdd" parameterType="List">
+        insert into rc_dict_entry
+        (tbl_id, dict_code, dict_name, dict_desc, dict_sort, create_by, update_by, create_time, ext1, ext2, ext3, ext4, ext5)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.tableId},#{item.dictCode},#{item.dictName},#{item.dictDesc},#{item.dictSort},
+            #{item.createBy},#{item.updateBy},#{item.createTime},#{item.ext1},#{item.ext2},
+            #{item.ext3},#{item.ext4},#{item.ext5})
+        </foreach>
+    </insert>
+
+    <!-- 删除 -->
+    <delete id="delete">
+        delete from rc_dict_entry where id = #{id}
+    </delete>
+
+    <delete id="deleteByTableId">
+        delete from rc_dict_entry where tbl_id = #{tableId}
+    </delete>
+
+    <!-- 更新 -->
+    <update id="update" parameterType="com.sachin.risk.common.data.model.DictEntry">
+        update rc_dict_entry
+        set dict_code = #{dictCode},dict_name = #{dictName}
+            <if test="dictDesc">,dict_desc = #{dictDesc}</if>
+            <if test="dictSort != null">,dict_sort = #{dictSort}</if>
+            , update_by=#{updateBy}
+            <if test="ext1">,ext1 = #{ext1}</if>
+            <if test="ext2">,ext2 = #{ext2}</if>
+            <if test="ext3">,ext3 = #{ext3}</if>
+            <if test="ext4">,ext4 = #{ext4}</if>
+            <if test="ext5">,ext5 = #{ext5}</if>
+        where id = #{dictId}
+    </update>
+
+
+    <!--<resultMap id="sysDictDetail" type="com.qunar.seccenter.boss.model.sysDict.SysDictDetail">-->
+        <!--<result property="dictId" column="id"/>-->
+        <!--<result property="tableId" column="tbl_id"/>-->
+        <!--<result property="tableName" column="tbl_name"/>-->
+        <!--<result property="tableType" column="tbl_type"/>-->
+        <!--<result property="dictCode" column="dict_code"/>-->
+        <!--<result property="dictName" column="dict_name"/>-->
+        <!--<result property="dictDesc" column="dict_desc"/>-->
+        <!--<result property="dictSort" column="dict_sort"/>-->
+        <!--<result property="createBy" column="create_by"/>-->
+        <!--<result property="updateBy" column="update_by"/>-->
+        <!--<result property="createTime" column="create_time"/>-->
+        <!--<result property="updateTime" column="update_time"/>-->
+        <!--<result property="ext1" column="ext1"/>-->
+        <!--<result property="ext2" column="ext2"/>-->
+        <!--<result property="ext3" column="ext3"/>-->
+        <!--<result property="ext4" column="ext4"/>-->
+        <!--<result property="ext5" column="ext5"/>-->
+    <!--</resultMap>-->
+
+
+    <!--<sql id="joinSelectSql">-->
+        <!--select a.tbl_name,a.tbl_type,b.id,b.tbl_id,b.dict_code,b.dict_name,b.dict_desc,b.dict_sort,b.create_by,-->
+        <!--b.update_by,b.create_time,b.update_time,b.ext1,b.ext2,b.ext3,b.ext4,b.ext5-->
+        <!--from rc_dict_table as a-->
+        <!--join rc_dict_entry as b-->
+        <!--on a.id=b.tbl_id-->
+    <!--</sql>-->
+
+    <!--<select id="querySysDictDetail" resultMap="sysDictDetail">-->
+        <!--<include refid="joinSelectSql"/>-->
+        <!--<where>-->
+            <!--<if test="tableName != null and tableName != ''">-->
+                <!--and a.tbl_name=#{tableName}-->
+            <!--</if>-->
+            <!--<if test="tableType != null">-->
+                <!--and a.tbl_type = #{tableType}-->
+            <!--</if>-->
+            <!--<if test="tableId != null">-->
+                <!--and a.id = #{tableId}-->
+            <!--</if>-->
+            <!--<if test="tableTypes != null">-->
+                <!--and a.tbl_type in-->
+                <!--<foreach item="item" collection="tableTypes" open="(" separator="," close=")">-->
+                    <!--#{item}-->
+                <!--</foreach>-->
+            <!--</if>-->
+            <!--<if test="dictCode != null and dictCode != ''">-->
+                <!--and b.dict_code=#{dictCode}-->
+            <!--</if>-->
+        <!--</where>-->
+    <!--</select>-->
+
+</mapper>
