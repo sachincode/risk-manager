@@ -1,6 +1,7 @@
 USE risk_control;
 set names utf8mb4;
 
+DROP TABLE IF EXISTS `rc_dict_table`;
 CREATE TABLE `rc_dict_table` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键id',
   `tbl_name` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '字典表名',
@@ -16,7 +17,7 @@ CREATE TABLE `rc_dict_table` (
   KEY `idx_update_time` (`update_time`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='字典表';
 
-
+DROP TABLE IF EXISTS `rc_dict_entry`;
 CREATE TABLE `rc_dict_entry` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键id',
   `tbl_id` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT '字典表id',
@@ -40,7 +41,7 @@ CREATE TABLE `rc_dict_entry` (
   KEY `idx_update_time` (`update_time`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='字典表条目详情';
 
-
+DROP TABLE IF EXISTS `rc_dict_log`;
 CREATE TABLE `rc_dict_log` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键id',
   `tbl_name` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '字典表名',
