@@ -14,11 +14,11 @@ import java.util.Map;
  */
 public interface DictTableMapper {
 
-    public List<DictTable> queryByCondition(Map param);
+    public List<DictTable> queryByCondition(Map<String, Object> param);
 
-    public List<DictTable> queryWithPage(Map param);
+    public List<DictTable> queryWithPage(Map<String, Object> param);
 
-    public long count(Map param);
+    public long count(Map<String, Object> param);
 
     public int add(DictTable dictTable);
 

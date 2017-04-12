@@ -2,6 +2,7 @@ package com.sachin.risk.manager.service.data;
 
 import com.sachin.risk.common.data.model.DictEntry;
 import com.sachin.risk.common.data.model.DictTable;
+import com.sachin.risk.manager.model.PageModel;
 import com.sachin.risk.manager.model.data.DictLog;
 import com.sachin.risk.manager.model.data.DictEntryParam;
 import com.sachin.risk.manager.model.data.DictTableParam;
@@ -18,7 +19,7 @@ import java.util.Map;
  */
 public interface DictService {
 
-    List<DictTable> queryDictTable(Map<String, Object> params);
+    PageModel<DictTable> pageQueryDictTable(Map<String, Object> params);
 
     /**
      * 新增字典表，主表
@@ -81,6 +82,8 @@ public interface DictService {
 
     List<DictEntry> queryDictEntryByTableId(long tableId);
 
+    PageModel<DictEntry> pageQueryDictEntry(Map<String, Object> params);
+
     /**
      * 根据字典表条目Id查询字典表条目
      * @param dictId 字典表条目Id
@@ -118,7 +121,7 @@ public interface DictService {
     List<String> batchImportDict(MultipartFile file, int dictType, String operator) throws Exception;
 
 
-    List<DictLog> queryDictLog(Map<String, Object> params);
+    PageModel<DictLog> pageQueryDictLog(Map<String, Object> params);
 
 
 }

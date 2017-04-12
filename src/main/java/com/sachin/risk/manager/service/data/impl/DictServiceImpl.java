@@ -10,6 +10,7 @@ import com.sachin.risk.common.data.model.DictTable;
 import com.sachin.risk.manager.dao.data.DictEntryMapper;
 import com.sachin.risk.manager.dao.data.DictLogMapper;
 import com.sachin.risk.manager.dao.data.DictTableMapper;
+import com.sachin.risk.manager.model.PageModel;
 import com.sachin.risk.manager.model.data.DictEntryParam;
 import com.sachin.risk.manager.model.data.DictLog;
 import com.sachin.risk.manager.model.data.DictTableParam;
@@ -51,8 +52,15 @@ public class DictServiceImpl implements DictService {
     public static final Logger LOGGER = LoggerFactory.getLogger(DictServiceImpl.class);
 
     @Override
-    public List<DictTable> queryDictTable(Map<String, Object> params) {
-        return dictTableMapper.queryByCondition(params);
+    public PageModel<DictTable> pageQueryDictTable(Map<String, Object> params) {
+        long count = dictTableMapper.count(params);
+        List<DictTable> dictTables = dictTableMapper.queryWithPage(params);
+        PageModel<DictTable> pageModel = new PageModel<>();
+        pageModel.setList(dictTables);
+        pageModel.setPageNo((Integer) params.get("pageNum"));
+        pageModel.setPageSize((Integer) params.get("pageSize"));
+        pageModel.setTotalRecords((int) count);
+        return pageModel;
     }
 
     @Override
@@ -232,6 +240,18 @@ public class DictServiceImpl implements DictService {
     }
 
     @Override
+    public PageModel<DictEntry> pageQueryDictEntry(Map<String, Object> params) {
+        long count = dictEntryMapper.count(params);
+        List<DictEntry> dictEntries = dictEntryMapper.queryWithPage(params);
+        PageModel<DictEntry> pageModel = new PageModel<>();
+        pageModel.setList(dictEntries);
+        pageModel.setPageNo((Integer) params.get("pageNum"));
+        pageModel.setPageSize((Integer) params.get("pageSize"));
+        pageModel.setTotalRecords((int) count);
+        return pageModel;
+    }
+
+    @Override
     public List<DictEntry> queryDictEntryByDictId(long dictId) {
         Map<String, Object> params = Maps.newHashMap();
         params.put("id", dictId);
@@ -322,8 +342,15 @@ public class DictServiceImpl implements DictService {
     }
 
     @Override
-    public List<DictLog> queryDictLog(Map<String, Object> params) {
-        return dictLogMapper.queryByCondition(params);
+    public PageModel<DictLog> pageQueryDictLog(Map<String, Object> params) {
+        long count = dictLogMapper.count(params);
+        List<DictLog> dictLogs = dictLogMapper.queryWithPage(params);
+        PageModel<DictLog> pageModel = new PageModel<>();
+        pageModel.setList(dictLogs);
+        pageModel.setPageNo((Integer) params.get("pageNum"));
+        pageModel.setPageSize((Integer) params.get("pageSize"));
+        pageModel.setTotalRecords((int) count);
+        return pageModel;
     }
 
     private DictEntry getDictByRow(List<String> row, Map<String, Long> nameIds, String operator) throws Exception {

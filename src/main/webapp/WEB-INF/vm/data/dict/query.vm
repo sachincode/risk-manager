@@ -1,0 +1,233 @@
+<div>
+    <div id="dictHead">
+        <div data-toggle="buttons" class="btn-group">
+            <label class="btn btn-white btn-default #if($!{index}==1)active#end" onclick="queryMain(1)">
+                <input type="radio" value="1" >
+                标准字典表
+            </label>
+
+            <label class="btn btn-white btn-default #if($!{index}==2)active#end" onclick="queryMain(2)">
+                <input type="radio" value="2" >
+                列表字典表
+            </label>
+
+            <label class="btn btn-white btn-default #if($!{index}==4)active#end" onclick="queryMain(4)">
+                <input type="radio" value="4" >
+                查看日志
+            </label>
+        </div>
+
+        <button id="importButton" type="button" class="btn btn-white btn-warning" style="float: right;">
+            批量导入
+        </button>
+        <button id="addButton" type="button" class="btn btn-white btn-warning" style="float: right;" >
+            新增字典表
+        </button>
+    </div>
+</div>
+<br>
+<div class="panel panel-info">
+    <div class="panel-heading clearfix">
+        <form id="search_form" method="post" action="">
+            <div>
+                <input type="hidden" id="index" name="index" value="$!{index}" />
+                <input type="hidden" id="pageSize" name="pageSize" value="$!{pageModel.pageSize}" />
+                <input type="hidden" id="pageNum" name="pageNum" value/>
+            </div>
+            #if($!{index}!=4)
+                <div class="pull-right" role="toolbar">
+                    <input type="text" id="keyWord" name="keyWord" placeholder="输入关键词" value="$!{keyWord}">&nbsp;&nbsp;
+                    <button id="selectButton" class="btn btn-primary btn-sm" type="button">
+                        查询
+                    </button>
+                </div>
+            #end
+
+            #if($!{index}==4)
+                <div class="pull-right" role="toolbar">
+                    字典表:<input type="text" id="tableName" name="tableName" placeholder="字典表名" value="$!{tableName}">&nbsp;&nbsp;
+                    操作人:<input type="text" id="operator" name="operator" placeholder="操作人" value="$!{operator}">&nbsp;&nbsp;
+                    详情:<input type="text" id="operateDetail" name="operateDetail" placeholder="操作详情" value="$!{operateDetail}">&nbsp;&nbsp;
+                    <button id="selectButton" class="btn btn-primary btn-sm" type="button">
+                        查询
+                    </button>
+                </div>
+            #end
+        </form>
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                #if($!{index}!=4)
+                <tr>
+                    <th><div class="text-center text-nowrap">ID</div></th>
+                    <th><div class="text-center text-nowrap">字典表</div></th>
+                    <th><div class="text-center text-nowrap">字典表名称</div></th>
+                    <th><div class="text-center text-nowrap">字典表描述</div></th>
+                    <th><div class="text-center text-nowrap">创建时间</div></th>
+                    <th><div class="text-center text-nowrap">创建人</div></th>
+                    <th><div class="text-center text-nowrap">更新时间</div></th>
+                    <th><div class="text-center text-nowrap">更新人</div></th>
+                    <th><div class="text-center text-nowrap">操作</div></th>
+                </tr>
+                #end
+                #if($!{index}==4)
+                <tr>
+                    <th><div class="text-center text-nowrap">序号</div></th>
+                    <th><div class="text-center text-nowrap">字典表</div></th>
+                    <th><div class="text-center text-nowrap">操作人</div></th>
+                    <th><div class="text-center text-nowrap">操作类型</div></th>
+                    <th><div class="text-center text-nowrap">操作时间</div></th>
+                    <th><div class="text-center text-nowrap">操作详情</div></th>
+                </tr>
+                #end
+                </thead>
+
+                <tbody>
+                #if($!{index}!=4)
+                    #foreach($table in $pageModel.list)
+                    <tr>
+                        <td><div class="text-center text-nowrap">$!{table.id}</div></td>
+                        <td><div class="text-center text-nowrap">$!{table.tableName}</div></td>
+                        <td><div class="text-center text-nowrap">$!{table.tableNameCn}</div></td>
+                        <td><div class="text-center text-nowrap">$!{table.tableDesc}</div></td>
+                        <td><div class="text-center text-nowrap">$!{table.createTime}</div></td>
+                        <td><div class="text-center text-nowrap">$!{table.createBy}</div></td>
+                        <td><div class="text-center text-nowrap">$!{table.updateTime}</div></td>
+                        <td><div class="text-center text-nowrap">$!{table.updateBy}</div></td>
+                        <td>
+                            <div class="text-center text-nowrap">
+                                <a href="javascript:void(0);" onclick="queryEntry($!{table.id})">
+                                    <span>查看</span>
+                                </a>
+                                <a href="javascript:void(0);" onclick="updateTable($!{table.id})">
+                                    <span>修改</span>
+                                </a>
+                                <a href="javascript:void(0);" onclick="deleteTable($!{table.id})">
+                                    <span>删除</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    #end
+                #end
+
+                #if($!{index}==4)
+                    #foreach($row in $pageModel.list)
+                    <tr>
+                        <td><div class="text-center text-nowrap">$!{row.id}</div></td>
+                        <td><div class="text-center text-nowrap">$!{row.tableName}</div></td>
+                        <td><div class="text-center text-nowrap">$!{row.operator}</div></td>
+                        <td><div class="text-center text-nowrap">$!{row.operateType}</div></td>
+                        <td><div class="text-center text-nowrap">$!{row.operateTime}</div></td>
+                        <td><div class="text-center text-nowrap">$!{row.operateDetail}</div></td>
+                    </tr>
+                    #end
+                #end
+                </tbody>
+            </table>
+        </div>
+
+        <div id="pagination_box" class="row">
+            <div class="col-xs-6">
+                <label>共$!{pageModel.totalRecords}条记录，共$!{pageModel.getTotalPages()}页</label>
+            </div>
+            <div class="pull-right">
+                <ul id="pagination_zc" class="pagination">  </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-footer">
+        <input type="hidden" id="curPage" name="curPage" value="$!{pageModel.pageNo}" />
+        <input type="hidden" id="totalRecords" name="totalRecords" value="$!{pageModel.totalRecords}" />
+        <input type="hidden" id="pages" name="pages" value="$!{pageModel.getTotalPages()}" />
+    </div>
+</div>
+
+
+
+#include('inc/script.vm')
+
+<script>
+
+    $(document).ready(function() {
+        $('#pagination_zc').twbsPagination({
+            first: '首页',
+            prev: '前一页',
+            next: '下一页',
+            last: '尾页',
+            totalPages: $!{pageModel.getTotalPages()},
+            startPage: $!{pageModel.pageNo},
+            visiblePages: 7,
+            initiateStartPageClick: false,
+            onPageClick: function (event, page) {
+                console.log('Page ' + page);
+                selectPage(page);
+            }
+        });
+    });
+
+    var creatFormData = function(){
+        return true;
+    }
+
+    var selectPage = function (page) {
+        if(creatFormData()) {
+            $('#pageNum').val(page);
+            $('#selectButton').val('查询中...');
+            $('#selectButton').attr("disabled", "disabled");
+            $('#selectButton').removeClass("btn-primary");
+            $('#search_form').attr("action", "/data/dict/query.do");
+            $('#search_form').submit();
+        }
+    };
+
+    $("#selectButton").click(function () {
+        selectPage(1);
+    });
+
+    $("#addButton").click(function () {
+        window.open("/data/dict/addTablePage.do");
+    });
+
+    $("#importButton").click(function () {
+        window.open("/data/dict/importDictPage.do");
+    });
+
+    function queryMain(id){
+        window.location = "/data/dict/query.do?index=" + id;
+    }
+
+    function queryEntry(id){
+        window.open("/data/dict/queryEntry.do?tableId=" + id);
+    }
+
+    function updateTable(id){
+        window.open("/data/dict/updateTablePage.do?tableId=" + id);
+    }
+
+    function deleteTable(id){
+        if (window.confirm('确定删除吗？')) {
+            $.ajax({
+                type: "post",
+                async: false,
+                url: "/data/dict/deleteTable.do",
+                data:{id:id},
+                error: function () {
+                    alert("操作失败");
+                },
+                success: function (data) {
+                    if (data.status == 0) {
+                        alert('操作成功');
+                        window.location.reload();
+                    } else {
+                        alert('操作失败: ' + data.message);
+                    }
+                }
+            });
+        };
+    }
+
+</script>

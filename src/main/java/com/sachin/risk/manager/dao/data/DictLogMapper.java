@@ -13,11 +13,11 @@ import java.util.Map;
  */
 public interface DictLogMapper {
 
-    public List<DictLog> queryByCondition(Map param);
+    public List<DictLog> queryByCondition(Map<String, Object> param);
 
-    public List<DictLog> queryWithPage(Map param);
+    public List<DictLog> queryWithPage(Map<String, Object> param);
 
-    public long count(Map param);
+    public long count(Map<String, Object> param);
 
     public int add(DictLog dictLog);
 }
