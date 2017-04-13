@@ -1,0 +1,130 @@
+﻿#set($layout="layout/blank.vm")
+
+<div class="panel panel-info">
+    <div class="panel-heading clearfix">新增字段</div>
+    <div class="panel-body">
+        <form class="form-horizontal" name="addForm">
+            <div>
+                <input id="tableId" type="hidden" name="tableId" value="$!{dictTable.id}">
+            </div>
+
+            <div class="form-group">
+                <label for="tableName" class="col-sm-2 control-label">字典表名</label>
+                <div class="col-sm-10">
+                    <input id="tableName" type="text" disabled="disabled" class="form-control" value="$!{dictTable.tableName}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="dictCode" class="col-sm-2 control-label">编码</label>
+                <div class="col-sm-10">
+                    <input id="dictCode" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="dictName" class="col-sm-2 control-label">编码名</label>
+                <div class="col-sm-10">
+                    <input id="dictName" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="dictDesc" class="col-sm-2 control-label">编码描述</label>
+                <div class="col-sm-10">
+                    <input id="dictDesc" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="dictSort" class="col-sm-2 control-label">排序</label>
+                <div class="col-sm-10">
+                    <input id="dictSort" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ext1" class="col-sm-2 control-label">扩展字段1</label>
+                <div class="col-sm-10">
+                    <input id="ext1" type="text" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ext2" class="col-sm-2 control-label">扩展字段2</label>
+                <div class="col-sm-10">
+                    <input id="ext2" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ext3" class="col-sm-2 control-label">扩展字段3</label>
+                <div class="col-sm-10">
+                    <input id="ext3" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ext4" class="col-sm-2 control-label">扩展字段4</label>
+                <div class="col-sm-10">
+                    <input id="ext4" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ext5" class="col-sm-2 control-label">扩展字段5</label>
+                <div class="col-sm-10">
+                    <input id="ext5" type="text" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button class="btn btn-primary" type="button" id="submitButton"><i class="ace-icon fa fa-check bigger-110"></i>提交
+                    </button>
+                    &nbsp;&nbsp;
+                    <button class="btn btn-warning" type="button" id="cancleButton"><i class="ace-icon fa fa-undo bigger-110"></i>返回
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="panel-footer">
+    </div>
+</div>
+
+
+#include('inc/script.vm')
+
+<script>
+    $("#submitButton").click(function () {
+        var tableId = $("#tableId").val();
+        var tableName = $("#tableName").val().trim();
+        var dictCode = $("#dictCode").val().trim();
+        var dictName = $("#dictName").val().trim();
+        var dictDesc = $("#dictDesc").val().trim();
+        var dictSort = $("#dictSort").val().trim();
+        var ext1 = $("#ext1").val().trim();
+        var ext2 = $("#ext2").val().trim();
+        var ext3 = $("#ext3").val().trim();
+        var ext4 = $("#ext4").val().trim();
+        var ext5 = $("#ext5").val().trim();
+        var param = {"tableId": tableId, "tableName": tableName, "dictCode": dictCode, "dictName": dictName,
+        "dictDesc": dictDesc, "dictSort": dictSort, "ext1": ext1, "ext2": ext2, "ext3": ext3, "ext4": ext4, "ext5": ext5}
+
+        if (tableId == '' || dictCode == '' || dictName == '') {
+            alert('编码和编码名不能为空');
+            return;
+        }
+
+        $.ajax("/data/dict/addEntry.do", {
+            type: "post",
+            data: JSON.stringify(param),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                if (data.status == 0) {
+                    alert('操作成功');
+                } else {
+                    alert('操作失败: ' + data.message);
+                }
+            },
+            error: function (data) {
+                alert('操作失败');
+            }
+        })
+    });
+
+</script>

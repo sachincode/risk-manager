@@ -1,0 +1,173 @@
+﻿#set($layout="layout/blank.vm")
+
+<div class="panel panel-info">
+    <div class="panel-heading clearfix">
+        ID: $!{table.id}&nbsp;&nbsp;&nbsp;&nbsp;字典表: $!{table.tableName}&nbsp;&nbsp;&nbsp;&nbsp;名称: $!{table.tableNameCn}&nbsp;&nbsp;&nbsp;&nbsp;描述: $!{table.tableDesc}
+        <div class="pull-right" role="toolbar">
+            <form id="search_form" method="post" action="">
+                <input id="tableId" type="hidden" name="tableId" value="$!{table.id}">
+                <input type="hidden" id="pageSize" name="pageSize" value="$!{pageModel.pageSize}" />
+                <input type="hidden" id="pageNum" name="pageNum" value/>
+                <input type="text" id="keyWords" name="keyWords" value="$!{keyWords}" placeholder="输入关键词">&nbsp;&nbsp;
+                <button class="btn btn-primary btn-sm" type="button" id="selectButton">
+                    查询
+                </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-info btn-sm" type="button" id="addEntryButton">
+                    新增
+                </button>&nbsp;&nbsp;&nbsp;&nbsp;
+            </form>
+##            <button class="btn btn-warning btn-sm" type="button">返回
+##            </button>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover" id="resultTable">
+                <thead>
+                <tr>
+                    <th><div class="text-center text-nowrap">序号</div></th>
+                    <th><div class="text-center text-nowrap">编码</div></th>
+                    <th><div class="text-center text-nowrap">编码名</div></th>
+                    <th><div class="text-center text-nowrap">编码描述</div></th>
+                    <th><div class="text-center text-nowrap">排序</div></th>
+                    <th><div class="text-center text-nowrap">创建时间</div></th>
+                    <th><div class="text-center text-nowrap">创建人</div></th>
+                    <th><div class="text-center text-nowrap">更新时间</div></th>
+                    <th><div class="text-center text-nowrap">更新人</div></th>
+                    <th><div class="text-center text-nowrap">扩展1</div></th>
+                    <th><div class="text-center text-nowrap">扩展2</div></th>
+                    <th><div class="text-center text-nowrap">扩展3</div></th>
+                    <th><div class="text-center text-nowrap">扩展4</div></th>
+                    <th><div class="text-center text-nowrap">扩展5</div></th>
+                    <th><div class="text-center text-nowrap">操作</div></th>
+                </tr>
+                </thead>
+                <tbody>
+                #foreach($entry in $pageModel.list)
+                <tr>
+                    <td><div class="text-center text-nowrap">$!{entry.id}</div></td>
+                    <td><div class="text-center text-nowrap">$!{entry.dictCode}</div></td>
+                    <td><div class="text-center text-nowrap">$!{entry.dictName}</div></td>
+                    <td><div class="text-center text-nowrap">$!{entry.dictDesc}</div></td>
+                    <td><div class="text-center text-nowrap">$!{entry.dictSort}</div></td>
+                    <td><div class="text-center text-nowrap">$!{entry.createTime}</div></td>
+                    <td><div class="text-center text-nowrap">$!{entry.createBy}</div></td>
+                    <td><div class="text-center text-nowrap">$!{entry.updateTime}</div></td>
+                    <td><div class="text-center text-nowrap">$!{entry.updateBy}</div></td>
+                    <td><div class="text-center text-nowrap">$!{entry.ext1}</div></td>
+                    <td><div class="text-center text-nowrap">$!{entry.ext2}</div></td>
+                    <td><div class="text-center text-nowrap">$!{entry.ext3}</div></td>
+                    <td><div class="text-center text-nowrap">$!{entry.ext4}</div></td>
+                    <td><div class="text-center text-nowrap">$!{entry.ext5}</div></td>
+                    <td>
+                        <div class="text-center text-nowrap">
+                            <a href="javascript:void(0);" onclick="updateData($!{entry.id})" id="updateButton">
+                                修改
+                            </a>
+                            <a href="javascript:void(0);" onclick="deleteData($!{entry.id})" id="deleteButton">
+                                删除
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                #end
+                </tbody>
+            </table>
+
+            <div id="pagination_box" class="row">
+                <div class="col-xs-6">
+                    <label>共$!{pageModel.totalRecords}条记录，共$!{pageModel.getTotalPages()}页</label>
+                </div>
+                <div class="pull-right">
+                    <ul id="pagination_zc" class="pagination">  </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <input type="hidden" id="curPage" name="curPage" value="$!{pageModel.pageNo}" />
+        <input type="hidden" id="totalRecords" name="totalRecords" value="$!{pageModel.totalRecords}" />
+        <input type="hidden" id="pages" name="pages" value="$!{pageModel.getTotalPages()}" />
+    </div>
+</div>
+
+#include('inc/script.vm')
+##<script src="/js/jquery.dataTables.min.js"></script>
+##<script src="/js/dataTables.bootstrap.js"></script>
+
+<script>
+    $(document).ready(function(){
+//        $('#resultTable').dataTable({
+//            language: dataTableLanguage
+//        });
+//        $('#resultTable')
+//                .removeClass( 'display' )
+//                .addClass('table table-striped table-bordered');
+
+        $('#pagination_zc').twbsPagination({
+            first: '首页',
+            prev: '前一页',
+            next: '下一页',
+            last: '尾页',
+            totalPages: $!{pageModel.getTotalPages()},
+            startPage: $!{pageModel.pageNo},
+            visiblePages: 7,
+            initiateStartPageClick: false,
+            onPageClick: function (event, page) {
+                console.log('Page ' + page);
+                selectPage(page);
+            }
+        });
+    });
+
+    var creatFormData = function(){
+        return true;
+    }
+
+    var selectPage = function (page) {
+        if(creatFormData()) {
+            var tableId = $('#tableId').val();
+            $('#pageNum').val(page);
+            $('#selectButton').val('查询中...');
+            $('#selectButton').attr("disabled", "disabled");
+            $('#selectButton').removeClass("btn-primary");
+            $('#search_form').attr("action", "/data/dict/queryEntry.do?tableId=" + tableId);
+            $('#search_form').submit();
+        }
+    };
+
+    $("#selectButton").click(function () {
+        selectPage(1);
+    });
+
+    $("#addEntryButton").click(function () {
+        var val = $('#tableId').val();
+        window.open("/data/dict/addEntryPage.do?tableId=" + val);
+    });
+
+    function deleteData(id){
+        if (window.confirm('确定删除吗？')) {
+            $.ajax({
+                type: "post",
+                async: false,
+                url: "/data/dict/deleteEntry.do",
+                data:{id:id},
+                error: function () {
+                    alert("操作失败");
+                },
+                success: function (data) {
+                    if (data.status == 0) {
+                        alert('操作成功');
+                        window.location.reload();
+                    } else {
+                        alert('操作失败: ' + data.message);
+                    }
+                }
+            });
+        };
+    }
+
+    function updateData(id){
+        window.open("/data/dict/updateEntryPage.do?id=" + id);
+    }
+</script>
