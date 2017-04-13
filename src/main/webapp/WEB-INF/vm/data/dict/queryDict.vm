@@ -50,9 +50,9 @@
                     <td><div class="text-center text-nowrap">$!{entry.dictName}</div></td>
                     <td><div class="text-center text-nowrap">$!{entry.dictDesc}</div></td>
                     <td><div class="text-center text-nowrap">$!{entry.dictSort}</div></td>
-                    <td><div class="text-center text-nowrap">$!{entry.createTime}</div></td>
+                    <td><div class="text-center text-nowrap">$!date.format($!{entry.createTime})</div></td>
                     <td><div class="text-center text-nowrap">$!{entry.createBy}</div></td>
-                    <td><div class="text-center text-nowrap">$!{entry.updateTime}</div></td>
+                    <td><div class="text-center text-nowrap">$!date.format($!{entry.updateTime})</div></td>
                     <td><div class="text-center text-nowrap">$!{entry.updateBy}</div></td>
                     <td><div class="text-center text-nowrap">$!{entry.ext1}</div></td>
                     <td><div class="text-center text-nowrap">$!{entry.ext2}</div></td>

@@ -92,9 +92,9 @@
                         <td><div class="text-center text-nowrap">$!{table.tableName}</div></td>
                         <td><div class="text-center text-nowrap">$!{table.tableNameCn}</div></td>
                         <td><div class="text-center text-nowrap">$!{table.tableDesc}</div></td>
-                        <td><div class="text-center text-nowrap">$!{table.createTime}</div></td>
+                        <td><div class="text-center text-nowrap">$!date.format($!{table.createTime})</div></td>
                         <td><div class="text-center text-nowrap">$!{table.createBy}</div></td>
-                        <td><div class="text-center text-nowrap">$!{table.updateTime}</div></td>
+                        <td><div class="text-center text-nowrap">$!date.format($!{table.updateTime})</div></td>
                         <td><div class="text-center text-nowrap">$!{table.updateBy}</div></td>
                         <td>
                             <div class="text-center text-nowrap">
@@ -120,7 +120,7 @@
                         <td><div class="text-center text-nowrap">$!{row.tableName}</div></td>
                         <td><div class="text-center text-nowrap">$!{row.operator}</div></td>
                         <td><div class="text-center text-nowrap">$!{row.operateType}</div></td>
-                        <td><div class="text-center text-nowrap">$!{row.operateTime}</div></td>
+                        <td><div class="text-center text-nowrap">$!date.format($!{row.operateTime})</div></td>
                         <td><div class="text-center text-nowrap">$!{row.operateDetail}</div></td>
                     </tr>
                     #end
