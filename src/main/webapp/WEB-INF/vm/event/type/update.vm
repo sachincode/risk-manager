@@ -1,0 +1,114 @@
+#set($layout="layout/blank.vm")
+
+<div class="col-xs-12">
+    <div class="panel panel-info">
+        <div class="panel-heading clearfix">修改事件类型</div>
+        <div class="panel-body">
+            <form class="form-horizontal" name="addForm">
+                <div>
+                    <input id="id" type="hidden" name="id" value="$!{eventType.id}">
+                </div>
+                <div class="form-group">
+                    <label for="code" class="col-sm-2 control-label">事件编码</label>
+                    <div class="col-sm-4">
+                        <input id="code" type="text" class="form-control" placeholder="英文\数字\下划线\中划线"
+                                value="$!{eventType.code}" disabled>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="name" class="col-sm-2 control-label">事件名称</label>
+                    <div class="col-sm-4">
+                        <input id="name" type="text" class="form-control" placeholder="中文名称" value="$!{eventType.name}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="type" class="col-sm-2 control-label">类型</label>
+                    <div class="col-sm-4">
+                        <select name="type" id="type" class="col-sm-12">
+                            <option value="0"></option>
+                            <option value="1" #if($!{eventType.type}==1)selected="selected" #end>同步事件</option>
+                            <option value="2" #if($!{eventType.type}==2)selected="selected" #end>异步事件</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="description" class="col-sm-2 control-label">描述</label>
+                    <div class="col-sm-4">
+                        <input id="description" type="text" class="form-control" value="$!{eventType.description}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="module" class="col-sm-2 control-label">模块</label>
+                    <div class="col-sm-4">
+                        <input id="module" type="text" class="form-control" value="$!{eventType.module}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="status" class="col-sm-2 control-label">状态</label>
+                    <div class="col-sm-4">
+                        <select name="status" id="status" class="col-sm-12">
+                            <option value="1" #if($!{eventType.status}==1)selected="selected" #end>上线</option>
+                            <option value="2" #if($!{eventType.status}==2)selected="selected" #end>下线</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button class="btn btn-primary" type="button" id="submitButton">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            提交
+                        </button>
+                        &nbsp;&nbsp;
+##                        <button class="btn btn-warning" type="button" id="cancleButton">
+##                            <i class="ace-icon fa fa-undo bigger-110"></i>
+##                            返回
+##                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="panel-footer">
+        </div>
+    </div>
+</div>
+
+#include('inc/script.vm')
+
+<script>
+    $("#submitButton").click(function () {
+        var id = $("#id").val().trim();
+        var code = $("#code").val().trim();
+        var name = $("#name").val().trim();
+        var description = $("#description").val().trim();
+        var module = $("#module").val().trim();
+        var type = $("#type").val();
+        var status = $("#status").val();
+        var param = {"id": id, "code": code, "name": name, "description": description, "module": module, "type": type, "status": status}
+        if (id == '' || code == '' || name == '' || description == '' || module == '' || type == 0 || status == 0) {
+            alert('输入不能为空');
+            return;
+        }
+        if (!isLetter(code)) {
+            alert('事件编码输入格式错误');
+            return;
+        }
+        $.ajax("/event/type/update.do", {
+            type: "post",
+            data: JSON.stringify(param),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                if (data.status == 0) {
+                    alert('操作成功');
+                } else {
+                    alert('操作失败: ' + data.message);
+                }
+            },
+            error: function (data) {
+                alert('操作失败');
+            }
+        })
+    });
+
+</script>
