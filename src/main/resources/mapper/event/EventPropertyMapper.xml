@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sachin.risk.manager.dao.event.EventPropertyMapper">
+
+    <resultMap id="eventProperty" type="com.sachin.risk.common.core.model.EventProperty">
+        <result property="id" column="id"/>
+        <result property="propKey" column="prop_key"/>
+        <result property="propName" column="prop_name"/>
+        <result property="description" column="description"/>
+        <result property="dataType" column="data_type" javaType="com.sachin.risk.common.core.enums.DataType"/>
+        <result property="busiType" column="busi_type" javaType="com.sachin.risk.common.core.enums.BusiType"/>
+        <result property="status" column="status"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectSql">
+	    select 
+	    	id,
+	    	prop_key,
+	    	prop_name,
+	    	description,
+	    	data_type,
+	    	busi_type,
+	    	status,
+	    	create_by,
+	    	update_by,
+	    	create_time,
+	    	update_time
+	    from
+	        rc_event_property
+	</sql>
+
+    <sql id="whereSql">
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="propKey != null and propKey != ''">
+                and prop_key = #{propKey}
+            </if>
+            <if test="propName != null and propName != ''">
+                and prop_name = #{propName}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="keyWord != null and keyWord != ''">
+                and description like '%${keyWord}%'
+            </if>
+        </where>
+    </sql>
+
+    <!-- 根据条件查询所有 -->
+    <select id="queryByCondition" resultMap="eventProperty">
+        <include refid="selectSql"/>
+        <include refid="whereSql"/>
+    </select>
+
+    <!-- 统计条数 -->
+    <select id="count" resultType="long">
+        select count(*)
+        from rc_event_property
+        <include refid="whereSql"/>
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="queryWithPage" resultMap="eventProperty">
+        <include refid="selectSql"/>
+        <include refid="whereSql"/>
+        order by id
+        limit #{start},#{pageSize}
+    </select>
+
+
+    <!-- 新增 -->
+    <insert id="add" useGeneratedKeys="true" keyProperty="id" parameterType="com.sachin.risk.common.core.model.EventProperty">
+        insert into rc_event_property(prop_key,prop_name,description,data_type,busi_type,status,create_by,update_by,create_time,update_time)
+        values(#{propKey},#{propName},#{description},#{dataType},#{busiType},#{status},#{createBy},#{updateBy},#{createTime},#{updateTime})
+    </insert>
+
+    <!-- 删除 -->
+    <delete id="delete">
+        delete from rc_event_property where id = #{id}
+    </delete>
+
+    <!-- 更新 -->
+    <update id="update" parameterType="com.sachin.risk.common.core.model.EventProperty">
+        update rc_event_property
+        set
+        update_by=#{updateBy}
+        <if test="propKey">,prop_key = #{propKey}</if>
+        <if test="propName">,prop_name = #{propName}</if>
+        <if test="description">,description = #{description}</if>
+        <if test="dataType">,data_type = #{dataType}</if>
+        <if test="status">,status = #{status}</if>
+        <if test="busiType">,busi_type = #{busiType}</if>
+        where id = #{id}
+    </update>
+
+</mapper>

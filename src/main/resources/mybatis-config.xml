@@ -8,4 +8,11 @@
         <setting name="defaultExecutorType" value="REUSE" />
     </settings>
 
+    <typeHandlers>
+        <typeHandler handler="com.sachin.risk.common.core.mybatis.DataTypeHandler"
+                     javaType="com.sachin.risk.common.core.enums.DataType" />
+        <typeHandler handler="com.sachin.risk.common.core.mybatis.BusiTypeHandler"
+                     javaType="com.sachin.risk.common.core.enums.BusiType" />
+    </typeHandlers>
+
 </configuration>

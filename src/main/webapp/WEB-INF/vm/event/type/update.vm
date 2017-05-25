@@ -89,7 +89,7 @@
             alert('输入不能为空');
             return;
         }
-        if (!isLetter(code)) {
+        if (!isLessLetter(code)) {
             alert('事件编码输入格式错误');
             return;
         }

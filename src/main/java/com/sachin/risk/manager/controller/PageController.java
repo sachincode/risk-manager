@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.sachin.risk.manager.util.CookieUtil;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -44,7 +45,7 @@ public class PageController {
 
     @RequestMapping(value = "/login.do")
     public String login(HttpServletRequest request, HttpServletResponse response) {
-        CookieUtil.login(request, response, "sachin");
+        CookieUtil.login(request, response, "sachin" + new DateTime().getHourOfDay());
         return "redirect:/index.do";
     }
 

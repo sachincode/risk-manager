@@ -9,6 +9,16 @@ function isLetter(value) {
     return false;
 }
 
+function isLessLetter(value) {
+    if (value.length != 0) {
+        reg = /^[A-Za-z_]+$/;
+        if (reg.test(value)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 var dataTableLanguage = {
     "sProcessing": "处理中...",
         "sLengthMenu": "显示 _MENU_ 项结果",

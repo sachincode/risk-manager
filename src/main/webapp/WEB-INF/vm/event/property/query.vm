@@ -7,7 +7,7 @@
         ##            查询
         ##        </button>&nbsp;&nbsp;&nbsp;&nbsp;
             <button class="btn btn-info btn-sm" type="button" id="addButton">
-                新增事件
+                新增属性
             </button>&nbsp;&nbsp;&nbsp;&nbsp;
         </form>
     </div>
@@ -19,11 +19,11 @@
                 <thead>
                 <tr>
                     <th><div class="text-center text-nowrap">序号</div></th>
-                    <th><div class="text-center text-nowrap">编码</div></th>
-                    <th><div class="text-center text-nowrap">名称</div></th>
+                    <th><div class="text-center text-nowrap">属性编码</div></th>
+                    <th><div class="text-center text-nowrap">属性名称</div></th>
                     <th><div class="text-center text-nowrap">描述</div></th>
-                    <th><div class="text-center text-nowrap">类型</div></th>
-                    <th><div class="text-center text-nowrap">模块</div></th>
+                    <th><div class="text-center text-nowrap">数据类型</div></th>
+                    <th><div class="text-center text-nowrap">业务类型</div></th>
                     <th><div class="text-center text-nowrap">状态</div></th>
                     <th><div class="text-center text-nowrap">创建时间</div></th>
                     <th><div class="text-center text-nowrap">创建人</div></th>
@@ -36,11 +36,11 @@
                     #foreach($entry in $pageModel.list)
                     <tr>
                         <td><div class="text-center text-nowrap">$!{entry.id}</div></td>
-                        <td><div class="text-center text-nowrap">$!{entry.code}</div></td>
-                        <td><div class="text-center text-nowrap">$!{entry.name}</div></td>
+                        <td><div class="text-center text-nowrap">$!{entry.propKey}</div></td>
+                        <td><div class="text-center text-nowrap">$!{entry.propName}</div></td>
                         <td><div class="text-center text-nowrap">$!{entry.description}</div></td>
-                        <td><div class="text-center text-nowrap">#if($!{entry.type}==1)同步 #else 异步 #end</div></td>
-                        <td><div class="text-center text-nowrap">$!{entry.module}</div></td>
+                        <td><div class="text-center text-nowrap">$!{entry.dataType.name}</div></td>
+                        <td><div class="text-center text-nowrap">$!{entry.busiType.description}</div></td>
                         <td><div class="text-center text-nowrap">#if($!{entry.status}==1)上线 #else 下线 #end</div></td>
                         <td><div class="text-center text-nowrap">$!date.format($!{entry.createTime})</div></td>
                         <td><div class="text-center text-nowrap">$!{entry.createBy}</div></td>
@@ -48,9 +48,9 @@
                         <td><div class="text-center text-nowrap">$!{entry.updateBy}</div></td>
                         <td>
                             <div class="text-center text-nowrap">
-                                <a href="javascript:void(0);" onclick="queryProperty($!{entry.id})" id="propertyButton">
-                                     查看属性
-                                </a>
+##                                <a href="javascript:void(0);" onclick="queryEvent($!{entry.id})" id="eventButton">
+##                                     查看事件
+##                                </a>
                                 <a href="javascript:void(0);" onclick="updateData($!{entry.id})" id="updateButton">
                                     修改
                                 </a>
@@ -116,13 +116,13 @@
     var selectPage = function (page) {
         if(creatFormData()) {
             $('#pageNum').val(page);
-            $('#search_form').attr("action", "/event/type/query.do");
+            $('#search_form').attr("action", "/event/property/query.do");
             $('#search_form').submit();
         }
     };
 
     $("#addButton").click(function () {
-        window.open("/event/type/addPage.do");
+        window.open("/event/property/addPage.do");
     });
 
     function updateStatus(id, status) {
@@ -130,7 +130,7 @@
             $.ajax({
                 type: "post",
                 async: false,
-                url: "/event/type/updateStatus.do",
+                url: "/event/property/updateStatus.do",
                 data:{id:id, status:status},
                 error: function () {
                     alert("操作失败");
@@ -148,10 +148,10 @@
     }
 
     function updateData(id) {
-        window.open("/event/type/updatePage.do?id=" + id);
+        window.open("/event/property/updatePage.do?id=" + id);
     }
 
-    function queryProperty(id) {
-        window.open("/event/type/queryProperty.do?id=" + id);
+    function queryEvent(id) {
+        window.open("/event/property/queryEvent.do?id=" + id);
     }
 </script>

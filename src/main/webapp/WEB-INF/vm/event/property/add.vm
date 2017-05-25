@@ -2,29 +2,19 @@
 
 <div class="col-xs-12">
     <div class="panel panel-info">
-        <div class="panel-heading clearfix">新增事件类型</div>
+        <div class="panel-heading clearfix">新增事件属性</div>
         <div class="panel-body">
             <form class="form-horizontal" name="addForm">
                 <div class="form-group">
-                    <label for="code" class="col-sm-2 control-label">事件编码</label>
+                    <label for="propKey" class="col-sm-2 control-label">属性编码</label>
                     <div class="col-sm-4">
-                        <input id="code" type="text" class="form-control" placeholder="英文\下划线">
+                        <input id="propKey" type="text" class="form-control" placeholder="英文\下划线">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="name" class="col-sm-2 control-label">事件名称</label>
+                    <label for="propName" class="col-sm-2 control-label">属性名称</label>
                     <div class="col-sm-4">
-                        <input id="name" type="text" class="form-control" placeholder="中文名称">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="type" class="col-sm-2 control-label">类型</label>
-                    <div class="col-sm-4">
-                        <select name="type" id="type" class="col-sm-12">
-                            <option value="0"></option>
-                            <option value="1">同步事件</option>
-                            <option value="2">异步事件</option>
-                        </select>
+                        <input id="propName" type="text" class="form-control" placeholder="中文名称">
                     </div>
                 </div>
                 <div class="form-group">
@@ -34,9 +24,23 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="module" class="col-sm-2 control-label">模块</label>
+                    <label for="dataType" class="col-sm-2 control-label">数据类型</label>
                     <div class="col-sm-4">
-                        <input id="module" type="text" class="form-control">
+                        <select name="dataType" id="dataType" class="col-sm-12">
+                            #foreach($dt in $dataTypes)
+                                <option value="$dt.code">$dt.name</option>
+                            #end
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="busiType" class="col-sm-2 control-label">业务类型</label>
+                    <div class="col-sm-4">
+                        <select name="busiType" id="busiType" class="col-sm-12">
+                            #foreach($dt in $busiTypes)
+                                <option value="$dt.code">$dt.description</option>
+                            #end
+                        </select>
                     </div>
                 </div>
                 <div class="form-group">
@@ -73,22 +77,23 @@
 
 <script>
     $("#submitButton").click(function () {
-        var code = $("#code").val().trim();
-        var name = $("#name").val().trim();
+        var code = $("#propKey").val().trim();
+        var name = $("#propName").val().trim();
         var description = $("#description").val().trim();
-        var module = $("#module").val().trim();
-        var type = $("#type").val();
+        var busiType = $("#busiType").val().trim();
+        var dataType = $("#dataType").val();
         var status = $("#status").val();
-        var param = {"code": code, "name": name, "description": description, "module": module, "type": type, "status": status}
-        if (code == '' || name == '' || description == '' || module == '' || type == 0 || status == 0) {
+        var param = {"propKey": code, "propName": name, "description": description, "busiType": busiType,
+            "dataType": dataType, "status": status}
+        if (code == '' || name == '' || description == '' || status == 0) {
             alert('输入不能为空');
             return;
         }
         if (!isLessLetter(code)) {
-            alert('事件编码输入格式错误');
+            alert('属性编码输入格式错误');
             return;
         }
-        $.ajax("/event/type/add.do", {
+        $.ajax("/event/property/add.do", {
             type: "post",
             data: JSON.stringify(param),
             contentType: "application/json; charset=utf-8",
