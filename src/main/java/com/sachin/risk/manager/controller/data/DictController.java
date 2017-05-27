@@ -6,7 +6,6 @@ import com.sachin.risk.common.data.model.DictTable;
 import com.sachin.risk.manager.model.HttpResult;
 import com.sachin.risk.manager.model.PageModel;
 import com.sachin.risk.manager.model.data.DictEntryParam;
-import com.sachin.risk.manager.model.data.DictLog;
 import com.sachin.risk.manager.model.data.DictTableParam;
 import com.sachin.risk.manager.service.data.DictService;
 import com.sachin.risk.manager.util.CookieUtil;
@@ -172,7 +171,7 @@ public class DictController {
         LOGGER.info("update dict entry request param is: {}", dictEntryParam);
         String name = CookieUtil.getLoginUsername(request);
         try {
-            dictService.updateSysDictDetail(dictEntryParam, name);
+            dictService.updateDictEntry(dictEntryParam, name);
             return HttpResult.success();
         } catch (Exception e) {
             LOGGER.error("update dict entry error.", e);

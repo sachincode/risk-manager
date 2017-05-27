@@ -40,6 +40,8 @@ public interface DictService {
 
     List<DictTable> queryDictTableById(long id);
 
+    List<DictTable> queryDictTableByType(int tableType);
+
     /**
      * 更新字典表，主表
      * @param dictTableParam
@@ -70,7 +72,7 @@ public interface DictService {
      * @param operator
      * @throws Exception
      */
-    void updateSysDictDetail(DictEntryParam dictEntryParam, String operator) throws Exception;
+    void updateDictEntry(DictEntryParam dictEntryParam, String operator) throws Exception;
 
     /**
      * 根据字典表主表Id和字典表详情编码查询字典表条目

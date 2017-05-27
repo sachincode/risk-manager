@@ -76,4 +76,17 @@ public class EventPropertyParam {
     public void setStatus(int status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "EventPropertyParam{" +
+                "id=" + id +
+                ", propKey='" + propKey + '\'' +
+                ", propName='" + propName + '\'' +
+                ", description='" + description + '\'' +
+                ", dataType=" + dataType +
+                ", busiType=" + busiType +
+                ", status=" + status +
+                '}';
+    }
 }

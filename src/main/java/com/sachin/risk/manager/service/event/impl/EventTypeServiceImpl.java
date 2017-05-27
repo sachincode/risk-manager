@@ -61,6 +61,12 @@ public class EventTypeServiceImpl implements EventTypeService {
     }
 
     @Override
+    public List<EventType> queryAllEventType() {
+        Map<String, Object> params = new HashMap<>();
+        return eventTypeMapper.queryByCondition(params);
+    }
+
+    @Override
     public void deleteEventType(long id) {
         eventTypeMapper.delete(id);
     }

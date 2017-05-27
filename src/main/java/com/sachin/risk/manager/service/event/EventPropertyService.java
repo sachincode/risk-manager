@@ -1,5 +1,6 @@
 package com.sachin.risk.manager.service.event;
 
+import java.util.List;
 import java.util.Map;
 
 import com.sachin.risk.common.core.model.EventProperty;
@@ -16,6 +17,8 @@ public interface EventPropertyService {
     EventProperty queryEventPropertyById(long id);
 
     EventProperty queryEventPropertyByKey(String propKey);
+
+    List<EventProperty> queryAllEventProperty();
 
     void deleteEventProperty(long id);
 

@@ -3,6 +3,7 @@ package com.sachin.risk.manager.service.event;
 import com.sachin.risk.common.core.model.EventType;
 import com.sachin.risk.manager.model.PageModel;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,6 +17,8 @@ public interface EventTypeService {
     EventType queryEventTypeById(long id);
 
     EventType queryEventTypeByCode(String code);
+
+    List<EventType> queryAllEventType();
 
     void deleteEventType(long id);
 

@@ -61,6 +61,12 @@ public class EventPropertyServiceImpl implements EventPropertyService {
     }
 
     @Override
+    public List<EventProperty> queryAllEventProperty() {
+        Map<String, Object> params = new HashMap<>();
+        return eventPropertyMapper.queryByCondition(params);
+    }
+
+    @Override
     public void deleteEventProperty(long id) {
         eventPropertyMapper.delete(id);
     }

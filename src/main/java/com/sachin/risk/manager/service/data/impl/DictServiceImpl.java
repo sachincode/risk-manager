@@ -105,6 +105,13 @@ public class DictServiceImpl implements DictService {
     }
 
     @Override
+    public List<DictTable> queryDictTableByType(int tableType) {
+        Map<String, Object> params = Maps.newHashMap();
+        params.put("tableType", tableType);
+        return dictTableMapper.queryByCondition(params);
+    }
+
+    @Override
     public void updateDictTable(DictTableParam dictTableParam, String operator) {
         List<DictTable> tables = queryDictTableByTableName(dictTableParam.getTableName());
         DictTable dictTable = doUpdateDictTable(dictTableParam, operator);
@@ -174,7 +181,7 @@ public class DictServiceImpl implements DictService {
     }
 
     @Override
-    public void updateSysDictDetail(DictEntryParam dictEntryParam, String operator) throws Exception {
+    public void updateDictEntry(DictEntryParam dictEntryParam, String operator) throws Exception {
         Preconditions.checkNotNull(operator);
         List<DictEntry> dictEntries = queryDictEntryByTableIdCode(dictEntryParam.getTableId(), dictEntryParam.getDictCode());
         for (DictEntry dict : dictEntries) {

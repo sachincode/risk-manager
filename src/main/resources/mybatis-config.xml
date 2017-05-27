@@ -13,6 +13,8 @@
                      javaType="com.sachin.risk.common.core.enums.DataType" />
         <typeHandler handler="com.sachin.risk.common.core.mybatis.BusiTypeHandler"
                      javaType="com.sachin.risk.common.core.enums.BusiType" />
+        <typeHandler handler="com.sachin.risk.common.core.mybatis.EncryptTypeHandler"
+                     javaType="com.sachin.risk.common.core.enums.EncryptType" />
     </typeHandlers>
 
 </configuration>

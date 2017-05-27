@@ -1,0 +1,127 @@
+#set($layout="layout/blank.vm")
+
+<div class="col-xs-12">
+    <div class="panel panel-info">
+        <div class="panel-heading clearfix">新增事件类型属性</div>
+        <div class="panel-body">
+            <form class="form-horizontal" name="addForm">
+                <div class="form-group">
+                    <label for="eventTypeId" class="col-sm-2 control-label">事件类型</label>
+                    <div class="col-sm-4">
+                        <select name="eventTypeId" id="eventTypeId" class="col-sm-12">
+                            #foreach($dt in $eventTypes)
+                                <option value="$dt.id">${dt.code}(${dt.name})</option>
+                            #end
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="eventPropId" class="col-sm-2 control-label">事件属性</label>
+                    <div class="col-sm-4">
+                        <select name="eventPropId" id="eventPropId" class="col-sm-12">
+                            #foreach($dt in $eventProperties)
+                                <option value="$dt.id">${dt.propKey}(${dt.propName})</option>
+                            #end
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="encryptType" class="col-sm-2 control-label">加密类型</label>
+                    <div class="col-sm-4">
+                        <select name="encryptType" id="encryptType" class="col-sm-12">
+                            #foreach($dt in $encryptTypes)
+                                <option value="$dt.code">$dt.description</option>
+                            #end
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="sortNumber" class="col-sm-2 control-label">排序序号</label>
+                    <div class="col-sm-4">
+                        <input id="sortNumber" type="text" class="form-control" value="0">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="dictTableName" class="col-sm-2 control-label">字典表解码表名</label>
+                    <div class="col-sm-4">
+                        <select name="dictTableName" id="dictTableName" class="col-sm-12">
+                            <option value="">无</option>
+                            #foreach($dt in $dictTables)
+                                <option value="$dt.tableName">${dt.tableName}(${dt.tableNameCn})</option>
+                            #end
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="status" class="col-sm-2 control-label">状态</label>
+                    <div class="col-sm-4">
+                        <select name="status" id="status" class="col-sm-12">
+                            <option value="1">上线</option>
+                            <option value="2">下线</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button class="btn btn-primary" type="button" id="submitButton">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            提交
+                        </button>
+                        &nbsp;&nbsp;
+##                        <button class="btn btn-warning" type="button" id="cancleButton">
+##                            <i class="ace-icon fa fa-undo bigger-110"></i>
+##                            返回
+##                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="panel-footer">
+        </div>
+    </div>
+</div>
+
+#include('inc/script.vm')
+
+<script>
+
+    $(document).ready(function () {
+        $('#eventTypeId').select2();
+        $('#eventPropId').select2();
+        $('#dictTableName').select2();
+    });
+
+
+    $("#submitButton").click(function () {
+        var eventTypeId = $("#eventTypeId").val().trim();
+        var eventPropId = $("#eventPropId").val().trim();
+        var encryptType = $("#encryptType").val().trim();
+        var sortNumber = $("#sortNumber").val().trim();
+        var dictTableName = $("#dictTableName").val().trim();
+        var status = $("#status").val();
+        var param = {"eventTypeId": eventTypeId, "eventPropId": eventPropId, "encryptType": encryptType,
+            "sortNumber": sortNumber, "dictTableName": dictTableName, "status": status}
+        if (eventTypeId == '' || eventPropId == '' || sortNumber == '') {
+            alert('输入不能为空');
+            return;
+        }
+        $.ajax("/event/typepro/add.do", {
+            type: "post",
+            data: JSON.stringify(param),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                if (data.status == 0) {
+                    alert('操作成功');
+                } else {
+                    alert('操作失败: ' + data.message);
+                }
+            },
+            error: function (data) {
+                alert('操作失败');
+            }
+        })
+    });
+
+</script>

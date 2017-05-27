@@ -1,0 +1,175 @@
+<div class="panel-heading clearfix">
+    <div role="toolbar">
+        <form id="search_form" method="post" action="">
+            <div>
+                <label for="eventTypeId" class="col-sm-1 control-label">事件类型</label>
+                <div class="col-sm-6">
+                    <select name="eventTypeId" id="eventTypeId" >
+                        <option value="0">请选择</option>
+                        #foreach($dt in $eventTypes)
+                            <option value="$dt.id" #if($!{eventTypeId}==$dt.id)selected="selected" #end>
+                                ${dt.code}(${dt.name})
+                            </option>
+                        #end
+                    </select>
+                </div>
+            </div>
+            <div>
+
+            </div>
+            <div class="pull-right" >
+                <input type="hidden" id="pageSize" name="pageSize" value="$!{pageModel.pageSize}" />
+                <input type="hidden" id="pageNum" name="pageNum" value/>
+                <button class="btn btn-primary btn-sm" type="button" id="selectButton">
+                    查询
+                </button>
+                <button class="btn btn-info btn-sm" type="button" id="addButton">
+                    新增事件
+                </button>&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover" id="resultTable">
+                <thead>
+                <tr>
+                    <th><div class="text-center text-nowrap">序号</div></th>
+                    <th><div class="text-center text-nowrap">事件类型</div></th>
+                    <th><div class="text-center text-nowrap">事件属性</div></th>
+                    <th><div class="text-center text-nowrap">加密类型</div></th>
+                    <th><div class="text-center text-nowrap">排序序号</div></th>
+                    <th><div class="text-center text-nowrap">字典表解码表名</div></th>
+                    <th><div class="text-center text-nowrap">状态</div></th>
+                    <th><div class="text-center text-nowrap">创建时间</div></th>
+                    <th><div class="text-center text-nowrap">创建人</div></th>
+                    <th><div class="text-center text-nowrap">更新时间</div></th>
+                    <th><div class="text-center text-nowrap">更新人</div></th>
+                    <th><div class="text-center text-nowrap">操作</div></th>
+                </tr>
+                </thead>
+                <tbody>
+                    #foreach($entry in $pageModel.list)
+                    <tr>
+                        <td><div class="text-center text-nowrap">$!{entry.id}</div></td>
+                        <td><div class="text-center text-nowrap">$!{entry.eventTypeId}</div></td>
+                        <td><div class="text-center text-nowrap">$!{entry.eventPropId}</div></td>
+                        <td><div class="text-center text-nowrap">$!{entry.encryptType.description}</div></td>
+                        <td><div class="text-center text-nowrap">$!{entry.sortNumber}</div></td>
+                        <td><div class="text-center text-nowrap">$!{entry.dictTableName}</div></td>
+                        <td><div class="text-center text-nowrap">#if($!{entry.status}==1)上线 #else 下线 #end</div></td>
+                        <td><div class="text-center text-nowrap">$!date.format($!{entry.createTime})</div></td>
+                        <td><div class="text-center text-nowrap">$!{entry.createBy}</div></td>
+                        <td><div class="text-center text-nowrap">$!date.format($!{entry.updateTime})</div></td>
+                        <td><div class="text-center text-nowrap">$!{entry.updateBy}</div></td>
+                        <td>
+                            <div class="text-center text-nowrap">
+                                <a href="javascript:void(0);" onclick="updateData($!{entry.id})" id="updateButton">
+                                    修改
+                                </a>
+                                #if($!{entry.status}==1)
+                                    <a href="javascript:void(0);" onclick="updateStatus($!{entry.id}, 2)" id="deleteButton">
+                                        下线
+                                    </a>
+                                #end
+                                #if($!{entry.status}==2)
+                                    <a href="javascript:void(0);" onclick="updateStatus($!{entry.id}, 1)" id="deleteButton">
+                                        上线
+                                    </a>
+                                #end
+                            </div>
+                        </td>
+                    </tr>
+                    #end
+                </tbody>
+            </table>
+
+            <div id="pagination_box" class="row">
+                <div class="col-xs-6">
+                    <label>共$!{pageModel.totalRecords}条记录，共$!{pageModel.getTotalPages()}页</label>
+                </div>
+                <div class="pull-right">
+                    <ul id="pagination_zc" class="pagination">  </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <input type="hidden" id="curPage" name="curPage" value="$!{pageModel.pageNo}" />
+        <input type="hidden" id="totalRecords" name="totalRecords" value="$!{pageModel.totalRecords}" />
+        <input type="hidden" id="pages" name="pages" value="$!{pageModel.getTotalPages()}" />
+    </div>
+</div>
+
+#include('inc/script.vm')
+
+<script>
+    $(document).ready(function(){
+
+        //$('#eventTypeId').select2();
+
+        $('#pagination_zc').twbsPagination({
+            first: '首页',
+            prev: '前一页',
+            next: '下一页',
+            last: '尾页',
+            totalPages: $!{pageModel.getTotalPages()},
+            startPage: $!{pageModel.pageNo},
+            visiblePages: 7,
+            initiateStartPageClick: false,
+            onPageClick: function (event, page) {
+                console.log('Page ' + page);
+                selectPage(page);
+            }
+        });
+    });
+
+    var creatFormData = function(){
+        return true;
+    }
+
+    var selectPage = function (page) {
+        if(creatFormData()) {
+            $('#pageNum').val(page);
+            $('#search_form').attr("action", "/event/typepro/query.do");
+            $('#search_form').submit();
+        }
+    };
+
+    $("#selectButton").click(function () {
+        selectPage(1);
+    });
+
+    $("#addButton").click(function () {
+        window.open("/event/typepro/addPage.do");
+    });
+
+    function updateStatus(id, status) {
+        if (window.confirm('确定操作吗？')) {
+            $.ajax({
+                type: "post",
+                async: false,
+                url: "/event/typepro/updateStatus.do",
+                data:{id:id, status:status},
+                error: function () {
+                    alert("操作失败");
+                },
+                success: function (data) {
+                    if (data.status == 0) {
+                        alert('操作成功');
+                        window.location.reload();
+                    } else {
+                        alert('操作失败: ' + data.message);
+                    }
+                }
+            });
+        };
+    }
+
+    function updateData(id) {
+        window.open("/event/typepro/updatePage.do?id=" + id);
+    }
+
+</script>
