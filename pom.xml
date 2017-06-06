@@ -33,6 +33,10 @@
             <groupId>com.sachin.risk</groupId>
             <artifactId>common-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.sachin.risk</groupId>
+            <artifactId>common-util</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -229,6 +233,11 @@
             <dependency>
                 <groupId>com.sachin.risk</groupId>
                 <artifactId>common-core</artifactId>
+                <version>${sachin.common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sachin.risk</groupId>
+                <artifactId>common-util</artifactId>
                 <version>${sachin.common.version}</version>
             </dependency>
 

@@ -106,6 +106,7 @@ public class DictController {
         params.put("pageSize", pageSize);
         params.put("start", (pageNum - 1) * pageSize);
         params.put("keyWords", keyWords);
+        params.put("tableId", tableId);
         PageModel<DictEntry> pageModel = dictService.pageQueryDictEntry(params);
         return new ModelAndView("data/dict/queryDict").addObject("table", dictTables.get(0))
                 .addObject("pageModel", pageModel).addObject("keyWords", keyWords);

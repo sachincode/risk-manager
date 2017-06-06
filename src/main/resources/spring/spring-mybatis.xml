@@ -21,7 +21,7 @@
     <!--</bean>-->
 
     <bean name="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.sachin.risk.manager.dao"/>
+        <property name="basePackage" value="com.sachin.risk.manager.dao,com.sachin.risk.common.data.dao"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
 </beans>
