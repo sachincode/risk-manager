@@ -6,6 +6,7 @@ import java.util.Map;
 import com.sachin.risk.common.core.model.EventType;
 import com.sachin.risk.common.core.model.EventTypeProperty;
 import com.sachin.risk.manager.model.PageModel;
+import com.sachin.risk.manager.model.event.EventTypePropertyExt;
 
 /**
  * @author shicheng.zhang
@@ -13,7 +14,7 @@ import com.sachin.risk.manager.model.PageModel;
  */
 public interface EventTypePropertyService {
 
-    PageModel<EventTypeProperty> pageQueryEventTypeProperty(Map<String, Object> params);
+    PageModel<EventTypePropertyExt> pageQueryEventTypeProperty(Map<String, Object> params);
 
     EventTypeProperty queryEventTypePropertyById(long id);
 

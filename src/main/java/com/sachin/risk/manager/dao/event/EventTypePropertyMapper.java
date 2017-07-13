@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.sachin.risk.common.core.model.EventTypeProperty;
+import com.sachin.risk.manager.model.event.EventTypePropertyExt;
 import org.apache.ibatis.annotations.Param;
 
 import com.sachin.risk.common.core.model.EventType;
@@ -16,7 +17,7 @@ public interface EventTypePropertyMapper {
 
     public List<EventTypeProperty> queryByCondition(Map<String, Object> param);
 
-    public List<EventTypeProperty> queryWithPage(Map<String, Object> param);
+    public List<EventTypePropertyExt> queryWithPage(Map<String, Object> param);
 
     public long count(Map<String, Object> param);
 

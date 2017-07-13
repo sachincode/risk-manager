@@ -26,8 +26,8 @@
                     <div class="col-sm-4">
                         <select name="type" id="type" class="col-sm-12">
                             <option value="0"></option>
-                            <option value="1" #if($!{eventType.type}==1)selected="selected" #end>同步事件</option>
-                            <option value="2" #if($!{eventType.type}==2)selected="selected" #end>异步事件</option>
+                            <option value="1" #if($!{eventType.type.code}==1)selected="selected" #end>同步事件</option>
+                            <option value="2" #if($!{eventType.type.code}==2)selected="selected" #end>异步事件</option>
                         </select>
                     </div>
                 </div>

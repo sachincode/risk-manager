@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.sachin.risk.common.core.enums.EncryptType;
 import com.sachin.risk.common.core.model.EventTypeProperty;
 import com.sachin.risk.manager.model.event.EventPropertyParam;
+import com.sachin.risk.manager.model.event.EventTypePropertyExt;
 import com.sachin.risk.manager.model.event.EventTypePropertyParam;
 import com.sachin.risk.manager.service.data.DictService;
 import com.sachin.risk.manager.service.event.EventPropertyService;
@@ -60,7 +61,7 @@ public class EventTypeProController {
         if (eventTypeId != null && eventTypeId > 0L) {
             params.put("eventTypeId", eventTypeId);
         }
-        PageModel<EventTypeProperty> pageModel = eventTypePropertyService.pageQueryEventTypeProperty(params);
+        PageModel<EventTypePropertyExt> pageModel = eventTypePropertyService.pageQueryEventTypeProperty(params);
         view.addObject("pageModel", pageModel);
         view.addObject("eventTypes", eventTypeService.queryAllEventType());
         view.addObject("eventTypeId", eventTypeId);

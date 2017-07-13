@@ -39,7 +39,7 @@
                         <td><div class="text-center text-nowrap">$!{entry.code}</div></td>
                         <td><div class="text-center text-nowrap">$!{entry.name}</div></td>
                         <td><div class="text-center text-nowrap">$!{entry.description}</div></td>
-                        <td><div class="text-center text-nowrap">#if($!{entry.type}==1)同步 #else 异步 #end</div></td>
+                        <td><div class="text-center text-nowrap">#if($!{entry.type.code}==1)同步 #else 异步 #end</div></td>
                         <td><div class="text-center text-nowrap">$!{entry.module}</div></td>
                         <td><div class="text-center text-nowrap">#if($!{entry.status}==1)上线 #else 下线 #end</div></td>
                         <td><div class="text-center text-nowrap">$!date.format($!{entry.createTime})</div></td>
@@ -152,6 +152,6 @@
     }
 
     function queryProperty(id) {
-        window.open("/event/type/queryProperty.do?id=" + id);
+        window.open("/event/typepro/query.do?eventTypeId=" + id);
     }
 </script>

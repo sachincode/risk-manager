@@ -17,6 +17,24 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
+    <resultMap id="eventTypePropertyExt" type="com.sachin.risk.manager.model.event.EventTypePropertyExt">
+        <result property="id" column="id"/>
+        <result property="eventTypeId" column="event_type_id"/>
+        <result property="eventPropId" column="event_prop_id"/>
+        <result property="encryptType" column="encrypt_type"/>
+        <result property="sortNumber" column="sort_number"/>
+        <result property="dictTableName" column="dict_table_name"/>
+        <result property="status" column="status"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="code" column="code"/>
+        <result property="name" column="name"/>
+        <result property="propKey" column="prop_key"/>
+        <result property="propName" column="prop_name"/>
+    </resultMap>
+
     <sql id="selectSql">
 	    select 
 	    	id,
@@ -33,6 +51,31 @@
 	    from
 	        rc_event_type_property
 	</sql>
+
+
+    <sql id="joinSelectSql">
+        select
+	    	a.id,
+	    	a.event_type_id,
+	    	a.event_prop_id,
+	    	a.encrypt_type,
+	    	a.sort_number,
+	    	a.dict_table_name,
+	    	a.status,
+	    	a.create_by,
+	    	a.update_by,
+	    	a.create_time,
+	    	a.update_time,
+	    	b.code,
+	    	b.name,
+	    	c.prop_key,
+	    	c.prop_name
+	    from
+	        rc_event_type_property as a
+        JOIN rc_event_type as b
+        JOIN rc_event_property as c
+        on a.event_type_id = b.id and a.event_prop_id = c.id
+    </sql>
 
     <sql id="whereSql">
         <where>
@@ -71,8 +114,8 @@
     </select>
 
     <!-- 分页查询 -->
-    <select id="queryWithPage" resultMap="eventTypeProperty">
-        <include refid="selectSql"/>
+    <select id="queryWithPage" resultMap="eventTypePropertyExt">
+        <include refid="joinSelectSql"/>
         <include refid="whereSql"/>
         order by id
         limit #{start},#{pageSize}

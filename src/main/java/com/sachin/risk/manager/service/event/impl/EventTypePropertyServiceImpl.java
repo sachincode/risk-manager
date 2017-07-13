@@ -3,6 +3,7 @@ package com.sachin.risk.manager.service.event.impl;
 import com.sachin.risk.common.core.model.EventTypeProperty;
 import com.sachin.risk.manager.dao.event.EventTypePropertyMapper;
 import com.sachin.risk.manager.model.PageModel;
+import com.sachin.risk.manager.model.event.EventTypePropertyExt;
 import com.sachin.risk.manager.service.event.EventTypePropertyService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
@@ -24,10 +25,10 @@ public class EventTypePropertyServiceImpl implements EventTypePropertyService {
     private EventTypePropertyMapper eventTypePropertyMapper;
 
     @Override
-    public PageModel<EventTypeProperty> pageQueryEventTypeProperty(Map<String, Object> params) {
+    public PageModel<EventTypePropertyExt> pageQueryEventTypeProperty(Map<String, Object> params) {
         long count = eventTypePropertyMapper.count(params);
-        List<EventTypeProperty> typeProperties = eventTypePropertyMapper.queryWithPage(params);
-        PageModel<EventTypeProperty> pageModel = new PageModel<>();
+        List<EventTypePropertyExt> typeProperties = eventTypePropertyMapper.queryWithPage(params);
+        PageModel<EventTypePropertyExt> pageModel = new PageModel<>();
         pageModel.setList(typeProperties);
         pageModel.setPageNo((Integer) params.get("pageNum"));
         pageModel.setPageSize((Integer) params.get("pageSize"));

@@ -24,7 +24,7 @@
                     查询
                 </button>
                 <button class="btn btn-info btn-sm" type="button" id="addButton">
-                    新增事件
+                    新增事件属性
                 </button>&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
         </form>
@@ -54,8 +54,8 @@
                     #foreach($entry in $pageModel.list)
                     <tr>
                         <td><div class="text-center text-nowrap">$!{entry.id}</div></td>
-                        <td><div class="text-center text-nowrap">$!{entry.eventTypeId}</div></td>
-                        <td><div class="text-center text-nowrap">$!{entry.eventPropId}</div></td>
+                        <td><div class="text-center text-nowrap">$!{entry.code}($!{entry.name})</div></td>
+                        <td><div class="text-center text-nowrap">$!{entry.propKey}($!{entry.propName})</div></td>
                         <td><div class="text-center text-nowrap">$!{entry.encryptType.description}</div></td>
                         <td><div class="text-center text-nowrap">$!{entry.sortNumber}</div></td>
                         <td><div class="text-center text-nowrap">$!{entry.dictTableName}</div></td>

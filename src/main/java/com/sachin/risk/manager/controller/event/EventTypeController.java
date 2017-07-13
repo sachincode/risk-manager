@@ -1,9 +1,11 @@
 package com.sachin.risk.manager.controller.event;
 
 import com.google.common.collect.Maps;
+import com.sachin.risk.common.core.enums.EventScope;
 import com.sachin.risk.common.core.model.EventType;
 import com.sachin.risk.manager.model.HttpResult;
 import com.sachin.risk.manager.model.PageModel;
+import com.sachin.risk.manager.model.event.EventTypeParam;
 import com.sachin.risk.manager.service.event.EventTypeService;
 import com.sachin.risk.manager.util.CookieUtil;
 import org.slf4j.Logger;
@@ -54,11 +56,11 @@ public class EventTypeController {
 
     @RequestMapping("add.do")
     @ResponseBody
-    public HttpResult add(@RequestBody EventType eventType, HttpServletRequest request) {
+    public HttpResult add(@RequestBody EventTypeParam eventType, HttpServletRequest request) {
         LOGGER.info("add event type request param is: {}", eventType);
         try {
             String name = CookieUtil.getLoginUsername(request);
-            Long id = eventTypeService.addEventType(eventType, name);
+            Long id = eventTypeService.addEventType(transform(eventType), name);
             return HttpResult.success(id);
         } catch (Exception e) {
             LOGGER.error("add event type error.", e);
@@ -78,11 +80,11 @@ public class EventTypeController {
 
     @RequestMapping("update.do")
     @ResponseBody
-    public HttpResult update(@RequestBody EventType eventType, HttpServletRequest request) {
+    public HttpResult update(@RequestBody EventTypeParam eventType, HttpServletRequest request) {
         LOGGER.info("update event type request param is: {}", eventType);
         try {
             String name = CookieUtil.getLoginUsername(request);
-            eventTypeService.updateEventType(eventType, name);
+            eventTypeService.updateEventType(transform(eventType), name);
             return HttpResult.success();
         } catch (Exception e) {
             LOGGER.error("update event type error.", e);
@@ -118,6 +120,19 @@ public class EventTypeController {
             LOGGER.error("updateStatus event type error.", e);
             return HttpResult.error(e.getMessage(), null);
         }
+    }
+
+
+    private EventType transform(EventTypeParam param) {
+        EventType eventType = new EventType();
+        eventType.setId(param.getId());
+        eventType.setCode(param.getCode());
+        eventType.setName(param.getName());
+        eventType.setDescription(param.getDescription());
+        eventType.setStatus(param.getStatus());
+        eventType.setType(EventScope.codeOf(param.getType()));
+        eventType.setModule(param.getModule());
+        return eventType;
     }
 
 }
